@@ -31,13 +31,13 @@
             <div class="flex min-h-screen">
                 <aside class="w-64 bg-slate-900 text-white p-5 space-y-3">
                     <h1 class="text-2xl font-bold mb-6">Library</h1>
-                    <a href="{{ route('dashboard') }}" class="block">Dashboard</a>
-                    <a href="/books" class="block">Books</a>
-                    <a href="/categories" class="block">Categories</a>
-                    <a href="/authors" class="block">Authors</a>
-                    <a href="/members" class="block">Members</a>
-                    <a href="/issue-books" class="block">Issue Books</a>
-                    <a href="/issue-books" class="block">Return / History</a>
+                    <a href="{{ route('dashboard') }}" class="block hover:bg-slate-700 p-2 rounded-md">Dashboard</a>
+                    <a href="/books" class="block hover:bg-slate-700 p-2 rounded-md">Books</a>
+                    <a href="/categories" class="block hover:bg-slate-700 p-2 rounded-md">Categories</a>
+                    <a href="/authors" class="block hover:bg-slate-700 p-2 rounded-md">Authors</a>
+                    <a href="/members" class="block hover:bg-slate-700 p-2 rounded-md">Members</a>
+                    <a href="/issue-books" class="block hover:bg-slate-700 p-2 rounded-md">Issue Books</a>
+                    <a href="/issue-books" class="block hover:bg-slate-700 p-2 rounded-md">Return / History</a>
                 </aside>
                 <!-- Page Content -->
                 <main class="flex-1 p-6">
