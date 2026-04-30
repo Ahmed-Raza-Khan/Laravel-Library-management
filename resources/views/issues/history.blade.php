@@ -21,12 +21,12 @@
                     <td class="p-3">{{ $issue->issue_date }}</td>
                     <td class="p-3">{{ $issue->return_date }}</td>
                     <td class="p-3">
-                        @if($issue->fine_amount > 0)
+                        @if(!is_null($issue->fine_amount) && $issue->fine_amount > 0)
                             <span class="text-red-600 font-semibold">
-                                Rs. {{ $issue->fine_amount }}
+                                Rs. {{ number_format($issue->fine_amount) }}
                             </span>
                         @else
-                            -
+                            <span class="text-green-600">No Fine</span>
                         @endif
                     </td>
                 </tr>
