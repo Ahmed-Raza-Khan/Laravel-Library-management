@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookIssue extends Model
 {
+    protected $casts = ['fine_amount' => 'integer',];
+
     protected $fillable = ['book_id','member_id','issue_date','due_date','return_date','status','fine_amount'];
 
     public function book()

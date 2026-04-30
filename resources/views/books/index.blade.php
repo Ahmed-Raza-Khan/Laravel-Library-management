@@ -9,12 +9,12 @@
 <table class="w-full bg-white shadow rounded">
     <thead>
         <tr class="bg-gray-200">
-            <th class="p-3">Title</th>
-            <th class="p-3">Code</th>
-            <th class="p-3">Category</th>
-            <th class="p-3">Author</th>
-            <th class="p-3">Qty</th>
-            <th class="p-3">Actions</th>
+            <th class="p-3 text-start">Title</th>
+            <th class="p-3 text-start">Code</th>
+            <th class="p-3 text-start">Category</th>
+            <th class="p-3 text-start">Author</th>
+            <th class="p-3 text-start">Qty</th>
+            <th class="p-3 text-start">Actions</th>
         </tr>
     </thead>
 
@@ -40,33 +40,3 @@
     </tbody>
 </table>
 @endsection
-
-{{-- @extends('layouts.app')
-
-@section('content')
-    <div class="flex justify-between mb-5">
-        <h2 class="text-2xl font-bold">Books</h2>
-        <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded">Add New Books</a>
-    </div>
-    <table class="w-full bg-white shadow rounded-xl overflow-hidden">
-        <thead class="bg-gray-200">
-            <tr>
-                <th class="p-3 text-left">ID</th>
-                <th class="p-3 text-left">Name</th>
-                <th class="p-3 text-left">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($items as $item)
-                <tr class="border-t">
-                    <td class="p-3">{{ $item->id }}</td>
-                    <td class="p-3">{{ $item->name }}</td>
-                    <td class="p-3 space-x-2">
-                        <a href="#" class="text-blue-600">Edit</a>
-                        <a href="#" class="text-red-600">Delete</a>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-@endsection --}}

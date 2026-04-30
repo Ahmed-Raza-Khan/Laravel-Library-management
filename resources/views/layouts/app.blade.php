@@ -36,8 +36,8 @@
                     <a href="/categories" class="block hover:bg-slate-700 p-2 rounded-md">Categories</a>
                     <a href="/authors" class="block hover:bg-slate-700 p-2 rounded-md">Authors</a>
                     <a href="/members" class="block hover:bg-slate-700 p-2 rounded-md">Members</a>
-                    <a href="/issue-books" class="block hover:bg-slate-700 p-2 rounded-md">Issue Books</a>
-                    <a href="/issue-books" class="block hover:bg-slate-700 p-2 rounded-md">Return / History</a>
+                    <a href="/issues" class="block hover:bg-slate-700 p-2 rounded-md">Issue Books</a>
+                    <a href="{{ route('issues.history') }}" class="block hover:bg-slate-700 p-2 rounded-md">Return / History</a>
                 </aside>
                 <!-- Page Content -->
                 <main class="flex-1 p-6">

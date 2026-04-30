@@ -9,63 +9,154 @@ use App\Models\Member;
 
 class BookIssueController extends Controller
 {
+    public function index()
+    {
+       $issues = BookIssue::with(['book','member'])->latest()->get();
+
+        foreach ($issues as $issue) {
+            if ($issue->status === 'issued' && now()->gt($issue->due_date)) {
+                $daysLate = now()->diffInDays($issue->due_date);
+
+                $issue->update([
+                    'status' => 'overdue',
+                    'fine_amount' => $daysLate * 10,
+                ]);
+            }
+        }
+
+        return view('issues.index', compact('issues'));
+    }
+
     public function create()
     {
         $books = Book::where('available_quantity', '>', 0)->get();
-        $members = Member::where('status', 1)->get();
+       $members = Member::all();     
 
         return view('issues.create', compact('books', 'members'));
     }
 
     public function store(Request $request)
     {
-        $book = Book::find($request->book_id);
+        $request->validate([
+            'book_id' => 'required|exists:books,id',
+            'member_id' => 'required|exists:members,id',
+            'due_date' => 'required|date|after:today',
+        ]);
 
-        if($book->available_quantity <= 0){
-            return back()->with('error','Book out of stock');
+        $book = Book::findOrFail($request->book_id);
+        if ($book->available_quantity <= 0) {
+            return back()->with('error', 'Book out of stock');
         }
 
-        $already = BookIssue::where('book_id',$request->book_id)
-            ->where('member_id',$request->member_id)
-            ->where('status','issued')
+        $already = BookIssue::where('book_id', $request->book_id)
+            ->where('member_id', $request->member_id)
+            ->where('status', 'issued')
             ->exists();
 
-        if($already){
-            return back()->with('error','Already issued');
+        if ($already) {
+            return back()->with('error', 'This member already has this book');
         }
 
         BookIssue::create([
-            'book_id'=>$request->book_id,
-            'member_id'=>$request->member_id,
-            'issue_date'=>now(),
-            'due_date'=>$request->due_date,
-            'status'=>'issued',
+            'book_id' => $request->book_id,
+            'member_id' => $request->member_id,
+            'issue_date' => now(),
+            'due_date' => $request->due_date,
+            'status' => 'issued',
+            'fine_amount' => 0,
         ]);
 
         $book->decrement('available_quantity');
 
-        return back()->with('success','Book Issued');
+        return redirect()->route('issues.index')->with('success', 'Book Issued');
     }
 
+    public function edit($id)
+    {
+        $issue = BookIssue::findOrFail($id);
+        $books = Book::all();
+        $members = Member::all();
+
+        return view('issues.edit', compact('issue','books','members'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $issue = BookIssue::findOrFail($id);
+
+        $request->validate([
+            'book_id' => 'required',
+            'member_id' => 'required',
+            'due_date' => 'required|date',
+        ]);
+
+        $issue->update([
+            'book_id' => $request->book_id,
+            'member_id' => $request->member_id,
+            'due_date' => $request->due_date,
+        ]);
+
+        return redirect()->route('issues.index')->with('success','Issue Updated');
+    }
+    
     public function returnBook($id)
     {
-        $issue = BookIssue::find($id);
+        $issue = BookIssue::with('book')->findOrFail($id);
+        if ($issue->status === 'returned') {
+            return back()->with('error', 'Book already returned');
+        }
 
         $fine = 0;
-
-        if(now()->gt($issue->due_date)){
-            $days = now()->diffInDays($issue->due_date);
-            $fine = $days * 10;
+        if (now()->gt($issue->due_date)) {
+            $daysLate = now()->diffInDays($issue->due_date);
+            $fine = $daysLate * 10;
         }
 
         $issue->update([
-            'return_date'=>now(),
-            'status'=>'returned',
-            'fine_amount'=>$fine,
+            'return_date' => now(),
+            'status' => 'returned',
+            'fine_amount' => $fine,
         ]);
 
         $issue->book->increment('available_quantity');
 
-        return back()->with('success','Book Returned');
+        return redirect()->route('issues.index')
+            ->with('success', 'Book returned successfully');
     }
+
+    public function history()
+    {
+        $issues = BookIssue::with(['book','member'])
+                    ->where('status', 'returned')
+                    ->latest()
+                    ->get();
+
+        return view('issues.history', compact('issues'));
+    }
+
+    // public function returnBook($id)
+    // {
+    //     $issue = BookIssue::findOrFail($id);
+
+    //     if ($issue->status == 'returned') {
+    //         return back()->with('error', 'Already returned');
+    //     }
+
+    //     $fine = 0;
+
+    //     if (now()->gt($issue->due_date)) {
+    //         $daysLate = now()->diffInDays($issue->due_date);
+    //         $fine = $daysLate * 10;
+    //     }
+
+    //     $issue->update([
+    //         'return_date' => now(),
+    //         'status' => 'returned',
+    //         'fine_amount' => $fine,
+    //     ]);
+
+    //     $issue->book->increment('available_quantity');
+
+    //     return back()->with('success', 'Book Returned');
+    // }
 }

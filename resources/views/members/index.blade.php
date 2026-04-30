@@ -9,11 +9,11 @@
     <table class="w-full bg-white shadow rounded">
         <thead class="bg-gray-200">
             <tr>
-                <th class="p-3">ID</th>
-                <th class="p-3">Name</th>
-                <th class="p-3">Email</th>
-                <th class="p-3">Phone</th>
-                <th class="p-3">Actions</th>
+                <th class="p-3 text-start">ID</th>
+                <th class="p-3 text-start">Name</th>
+                <th class="p-3 text-start">Email</th>
+                <th class="p-3 text-start">Phone</th>
+                <th class="p-3 text-start">Actions</th>
             </tr>
         </thead>
 
