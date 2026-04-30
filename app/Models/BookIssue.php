@@ -10,6 +10,11 @@ class BookIssue extends Model
 
     protected $fillable = ['book_id','member_id','issue_date','due_date','return_date','status','fine_amount'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function book()
     {
         return $this->belongsTo(Book::class);

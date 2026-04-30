@@ -4,9 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Member;
+use App\Models\BookIssue;
+use App\Models\Book;
 
 class MemberController extends Controller
 {
+    public function books()
+    {
+        $books = Book::latest()->get();
+        return view('member.books', compact('books'));
+    }
+
+    public function history()
+    {
+        $issues = BookIssue::where('user_id', auth()->id())
+            ->with('book')
+            ->latest()
+            ->get();
+
+        return view('member.history', compact('issues'));
+    }
+
     public function index()
     {
         $members = Member::latest()->get();

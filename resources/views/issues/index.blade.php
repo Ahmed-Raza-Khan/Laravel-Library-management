@@ -27,7 +27,7 @@
             @endphp
                 <tr class="border-t">
                     <td class="p-3">{{ $issue->book->title }}</td>
-                    <td class="p-3">{{ $issue->member->name }}</td>
+                    <td class="p-3">{{ $issue->user->name }}</td>
                     <td class="p-3">{{ $issue->issue_date }}</td>
                     <td class="p-3">{{ $issue->due_date }}</td>
                     <td class="p-3">{{ $issue->status }}</td>

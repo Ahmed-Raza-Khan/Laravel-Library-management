@@ -13,6 +13,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+// dashbboard routes
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -23,6 +25,8 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+
+// admin routes
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('books', BookController::class);
     Route::resource('categories', CategoryController::class);
@@ -38,13 +42,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::post('/issues/{id}/return', [BookIssueController::class, 'returnBook'])->name('issues.return');
     Route::get('/return-history', [BookIssueController::class, 'history'])->name('issues.history');
-    // Route::get('/issues', [BookIssueController::class,'index'])->name('issues.index');
-    // Route::get('/issues/{id}/edit', [BookIssueController::class,'edit'])->name('issues.edit');
-    // Route::put('/issues/{id}', [BookIssueController::class,'update'])->name('issues.update');
-    // Route::get('/issue-books', [BookIssueController::class, 'create'])->name('issue.create');
-    // Route::post('/issue-books', [BookIssueController::class, 'store'])->name('issue.store');
+});
 
-    // Route::get('/return-book/{id}', [BookIssueController::class, 'returnBook'])->name('issue.return');
+
+// user routes
+Route::middleware(['auth', 'member'])->group(function () {
+    Route::get('/member/books', [MemberController::class, 'books'])->name('member.books');
+
+    Route::get('/member/history', [MemberController::class, 'history'])->name('member.history');
 });
 
 

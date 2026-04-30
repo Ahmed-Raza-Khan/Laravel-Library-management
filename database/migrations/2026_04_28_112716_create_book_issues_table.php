@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('book_issues', function (Blueprint $table) {
             $table->id();
             $table->foreignId('book_id')->constrained();
-            $table->foreignId('member_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->date('issue_date');
             $table->date('due_date');
             $table->date('return_date')->nullable();

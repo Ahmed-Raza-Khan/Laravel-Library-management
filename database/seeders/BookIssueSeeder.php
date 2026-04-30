@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\BookIssue;
 use App\Models\Book;
-use App\Models\Member;
+use App\Models\User;
 use Carbon\Carbon;
 
 class BookIssueSeeder extends Seeder
@@ -17,10 +17,9 @@ class BookIssueSeeder extends Seeder
     public function run(): void
     {
         $books = Book::all();
-        $members = Member::all();
+        $users = User::where('role', 'user')->get();
 
         foreach (range(1, 10) as $i) {
-
             $issueDate = Carbon::now()->subDays(rand(1, 20));
             $dueDate = (clone $issueDate)->addDays(7);
 
@@ -28,7 +27,7 @@ class BookIssueSeeder extends Seeder
 
             BookIssue::create([
                 'book_id' => $books->random()->id,
-                'member_id' => $members->random()->id,
+                'user_id' => $users->random()->id,
                 'issue_date' => $issueDate,
                 'due_date' => $dueDate,
                 'return_date' => $isReturned ? Carbon::now() : null,

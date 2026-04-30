@@ -31,15 +31,24 @@
 
             <div class="flex min-h-screen">
                 <aside class="w-64 bg-slate-900 text-white p-5 space-y-3">
-                    <h1 class="text-2xl font-bold mb-6">Library</h1>
-                    <a href="{{ route('dashboard') }}" class="block hover:bg-slate-700 p-2 rounded-md">Dashboard</a>
-                    <a href="/books" class="block hover:bg-slate-700 p-2 rounded-md">Books</a>
-                    <a href="/categories" class="block hover:bg-slate-700 p-2 rounded-md">Categories</a>
-                    <a href="/authors" class="block hover:bg-slate-700 p-2 rounded-md">Authors</a>
-                    <a href="/members" class="block hover:bg-slate-700 p-2 rounded-md">Members</a>
-                    <a href="/issues" class="block hover:bg-slate-700 p-2 rounded-md">Issue Books</a>
-                    <a href="{{ route('issues.history') }}" class="block hover:bg-slate-700 p-2 rounded-md">Return / History</a>
+                    @if(auth()->user()->role == 'admin')
+                        <h1 class="text-2xl font-bold mb-6">Library</h1>
+                        <a href="{{ route('dashboard') }}" class="block hover:bg-slate-700 p-2 rounded-md">Dashboard</a>
+                        <a href="/books" class="block hover:bg-slate-700 p-2 rounded-md">Books</a>
+                        <a href="/categories" class="block hover:bg-slate-700 p-2 rounded-md">Categories</a>
+                        <a href="/authors" class="block hover:bg-slate-700 p-2 rounded-md">Authors</a>
+                        <a href="/members" class="block hover:bg-slate-700 p-2 rounded-md">Members</a>
+                        <a href="/issues" class="block hover:bg-slate-700 p-2 rounded-md">Issue Books</a>
+                        <a href="{{ route('issues.history') }}" class="block hover:bg-slate-700 p-2 rounded-md">Return / History</a>
+                    @endif
+
+                    @if(auth()->user()->role == 'user')
+                        <h1 class="text-2xl font-bold mb-6">Library</h1>
+                        <a href="{{ route('member.books') }}" class="block hover:bg-slate-700 p-2 rounded-md">Available Books</a>
+                        <a href="{{ route('member.history') }}" class="block hover:bg-slate-700 p-2 rounded-md">My History</a>
+                    @endif
                 </aside>
+
                 <!-- Page Content -->
                 <main class="flex-1 p-6">
                     @yield('content')

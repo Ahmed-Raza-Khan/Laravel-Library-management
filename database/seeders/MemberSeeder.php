@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 use App\Models\Member;
+use App\Models\User;
 
 class MemberSeeder extends Seeder
 {
@@ -13,15 +15,24 @@ class MemberSeeder extends Seeder
      */
     public function run(): void
     {
-        $members = [
-            ['name' => 'Ali Khan', 'email' => 'ali@gmail.com', 'phone' => '03001111111', 'address' => 'Karachi', 'status' => 1],
-            ['name' => 'Sara Ahmed', 'email' => 'sara@gmail.com', 'phone' => '03002222222', 'address' => 'Lahore', 'status' => 1],
-            ['name' => 'Usman Tariq', 'email' => 'usman@gmail.com', 'phone' => '03003333333', 'address' => 'Islamabad', 'status' => 1],
-            ['name' => 'Ayesha Malik', 'email' => 'ayesha@gmail.com', 'phone' => '03004444444', 'address' => 'Karachi', 'status' => 1],
+            $members = [
+            ['name' => 'Ali Khan', 'email' => 'ali@gmail.com'],
+            ['name' => 'Sara Ahmed', 'email' => 'sara@gmail.com'],
+            ['name' => 'Usman Tariq', 'email' => 'usman@gmail.com'],
+            ['name' => 'Ayesha Malik', 'email' => 'ayesha@gmail.com'],
         ];
 
         foreach ($members as $member) {
-            Member::create($member);
+            User::create([
+                'name' => $member['name'],
+                'email' => $member['email'],
+                'password' => Hash::make('12345678'),
+                'role' => 'user',
+            ]);
         }
+
+        // foreach ($members as $member) {
+        //     Member::create($member);
+        // }
     }
 }

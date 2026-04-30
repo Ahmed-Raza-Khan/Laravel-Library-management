@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,18 +18,28 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
+
+        Schema::disableForeignKeyConstraints();
+
+        \App\Models\BookIssue::truncate();
+        \App\Models\Book::truncate();
+        \App\Models\Category::truncate();
+        \App\Models\Author::truncate();
+        \App\Models\User::where('role', 'user')->delete();
+
+        Schema::enableForeignKeyConstraints();
 
         $this->call([
             CategorySeeder::class,
             AuthorSeeder::class,
             MemberSeeder::class,
+            AdminSeeder::class,
             BookSeeder::class,
             BookIssueSeeder::class,
-            AdminSeeder::class,
         ]);
     }
 }
