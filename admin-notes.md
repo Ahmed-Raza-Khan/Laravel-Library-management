@@ -165,3 +165,4 @@ class NewsletterController extends Controller {
         $this->newsletter->subscribe(request('email'));
     }
 }
+

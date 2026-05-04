@@ -2,76 +2,108 @@
 
 namespace App\Services;
 
+use App\Contracts\BookIssueServiceInterface;
+use App\Contracts\FineServiceInterface;
 use App\Models\Book;
 use App\Models\BookIssue;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
-class BookIssueService
+class BookIssueService implements BookIssueServiceInterface
 {
-    /**
-     * Create a new class instance.
-     */
-    public function issueBook($data)
+    protected FineServiceInterface $fineService;
+
+    public function __construct(FineServiceInterface $fineService)
     {
-        $book = Book::findOrFail($data['book_id']);
-
-        if ($book->available_quantity <= 0) {
-            throw new \Exception('Book out of stock');
-        }
-
-        $already = BookIssue::where('book_id', $data['book_id'])
-            ->where('user_id', $data['user_id'])
-            ->where('status', 'issued')
-            ->exists();
-
-        if ($already) {
-            throw new \Exception('This member already has this book');
-        }
-
-        BookIssue::create([
-            'book_id' => $data['book_id'],
-            'user_id' => $data['user_id'],
-            'issue_date' => now(),
-            'due_date' => $data['due_date'],
-            'status' => 'issued',
-            'fine_amount' => 0,
-        ]);
-
-        $book->decrement('available_quantity');
+        $this->fineService = $fineService;
     }
 
-    public function returnBook($issue)
+    public function getAllIssues(): Collection
     {
-        if ($issue->status === 'returned') {
-            throw new \Exception('Book already returned');
-        }
+        return BookIssue::with(['book', 'user'])->latest()->get();
+    }
 
-        $fine = 0;
+    public function getIssueById(int $id): BookIssue
+    {
+        return BookIssue::with(['book', 'user'])->findOrFail($id);
+    }
 
-        if (now()->gt($issue->due_date)) {
-            $daysLate = now()->diffInDays($issue->due_date);
-            $fine = $daysLate * 10;
-        }
+    public function getReturnedIssues(): Collection
+    {
+        return BookIssue::with(['book', 'user'])
+            ->where('status', 'returned')
+            ->latest()
+            ->get();
+    }
+
+    public function issueBook(int $bookId, int $userId, string $dueDate): BookIssue
+    {
+        return DB::transaction(function () use ($bookId, $userId, $dueDate) {
+
+            $book = Book::findOrFail($bookId);
+
+            if ($book->available_quantity <= 0) {
+                throw new \Exception('Book out of stock');
+            }
+
+            $alreadyIssued = BookIssue::where('book_id', $bookId)
+                ->where('user_id', $userId)
+                ->where('status', 'issued')
+                ->exists();
+
+            if ($alreadyIssued) {
+                throw new \Exception('User already has this book');
+            }
+
+            $issue = BookIssue::create([
+                'book_id' => $bookId,
+                'user_id' => $userId,
+                'issue_date' => now(),
+                'due_date' => $dueDate,
+                'status' => 'issued',
+                'fine_amount' => 0
+            ]);
+
+            $book->decrement('available_quantity');
+
+            return $issue;
+        });
+    }
+
+    public function returnBook(int $issueId): BookIssue
+    {
+        return DB::transaction(function () use ($issueId) {
+
+            $issue = BookIssue::with('book')->findOrFail($issueId);
+
+            if ($issue->status === 'returned') {
+                throw new \Exception('Book already returned');
+            }
+
+            $fine = $this->fineService->calculateFine($issue->due_date);
+
+            $issue->update([
+                'return_date' => now(),
+                'status' => 'returned',
+                'fine_amount' => $fine
+            ]);
+
+            $issue->book->increment('available_quantity');
+
+            return $issue;
+        });
+    }
+
+    public function updateIssue(int $issueId, array $data): BookIssue
+    {
+        $issue = BookIssue::findOrFail($issueId);
 
         $issue->update([
-            'return_date' => now(),
-            'status' => 'returned',
-            'fine_amount' => $fine,
+            'book_id' => $data['book_id'],
+            'user_id' => $data['user_id'],
+            'due_date' => $data['due_date']
         ]);
 
-        $issue->book->increment('available_quantity');
-    }
-
-    public function updateOverdueStatus($issues)
-    {
-        foreach ($issues as $issue) {
-            if ($issue->status === 'issued' && now()->gt($issue->due_date)) {
-                $daysLate = now()->diffInDays($issue->due_date);
-
-                $issue->update([
-                    'status' => 'overdue',
-                    'fine_amount' => $daysLate * 10,
-                ]);
-            }
-        }
+        return $issue;
     }
 }
