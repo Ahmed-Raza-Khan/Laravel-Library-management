@@ -18,16 +18,16 @@
         </thead>
 
         <tbody>
-            @foreach($members as $m)
+            @foreach($users as $u)
                 <tr class="border-t">
-                    <td class="p-3">{{ $m->id }}</td>
-                    <td class="p-3">{{ $m->name }}</td>
-                    <td class="p-3">{{ $m->email }}</td>
-                    <td class="p-3">{{ $m->phone }}</td>
+                    <td class="p-3">{{ $u->id }}</td>
+                    <td class="p-3">{{ $u->name }}</td>
+                    <td class="p-3">{{ $u->email }}</td>
+                    <td class="p-3">{{ $u->phone ?? '-'}}</td>
                     <td class="p-3 space-x-2">
-                        <a href="{{ route('members.edit',$m->id) }}" class="text-blue-600">Edit</a>
+                        <a href="{{ route('members.edit',$u->id) }}" class="text-blue-600">Edit</a>
 
-                        <form action="{{ route('members.destroy',$m->id) }}" method="POST" class="inline">
+                        <form action="{{ route('members.destroy',$u->id) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
                             <button class="text-red-600">Delete</button>

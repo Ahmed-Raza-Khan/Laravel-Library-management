@@ -19,7 +19,7 @@ class BookIssueService
         }
 
         $already = BookIssue::where('book_id', $data['book_id'])
-            ->where('member_id', $data['member_id'])
+            ->where('user_id', $data['user_id'])
             ->where('status', 'issued')
             ->exists();
 
@@ -29,7 +29,7 @@ class BookIssueService
 
         BookIssue::create([
             'book_id' => $data['book_id'],
-            'member_id' => $data['member_id'],
+            'user_id' => $data['user_id'],
             'issue_date' => now(),
             'due_date' => $data['due_date'],
             'status' => 'issued',

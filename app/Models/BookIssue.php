@@ -8,7 +8,7 @@ class BookIssue extends Model
 {
     protected $casts = ['fine_amount' => 'integer',];
 
-    protected $fillable = ['book_id','member_id','issue_date','due_date','return_date','status','fine_amount'];
+    protected $fillable = ['book_id','user_id','issue_date','due_date','return_date','status','fine_amount'];
 
     public function user()
     {
@@ -18,10 +18,5 @@ class BookIssue extends Model
     public function book()
     {
         return $this->belongsTo(Book::class);
-    }
-
-    public function member()
-    {
-        return $this->belongsTo(Member::class);
     }
 }

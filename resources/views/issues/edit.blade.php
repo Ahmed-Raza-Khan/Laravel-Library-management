@@ -15,10 +15,10 @@
         @endforeach
     </select>
 
-    <select name="member_id" class="w-full border p-2">
-        @foreach($members as $member)
-            <option value="{{ $member->id }}" @selected($issue->member_id == $member->id)>
-                {{ $member->name }}
+    <select name="user_id" class="w-full border p-2">
+        @foreach($users as $user)
+            <option value="{{ $user->id }}" @selected($issue->user_id == $user->id)>
+                {{ $user->name }}
             </option>
         @endforeach
     </select>

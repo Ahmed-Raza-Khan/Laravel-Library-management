@@ -16,21 +16,23 @@
     @endif
 
     <form method="POST" action="{{ route('issues.store') }}" class="bg-white p-6 shadow rounded space-y-3">
-    @csrf
+        @csrf
 
-    <select name="book_id" class="w-full border p-2">
-        @foreach($books as $book)
-            <option value="{{ $book->id }}">{{ $book->title }}</option>
-        @endforeach
-    </select>
+        <select name="book_id" class="w-full border p-2">
+            @foreach($books as $book)
+                <option value="{{ $book->id }}">{{ $book->title }}</option>
+            @endforeach
+        </select>
 
-    <select name="member_id" class="w-full border p-2">
-        @foreach($members as $member)
-            <option value="{{ $member->id }}">{{ $member->name }}</option>
-        @endforeach
-    </select>
+        <select name="user_id" class="w-full border p-2">
+            @foreach($users as $user)
+                <option value="{{ $user->id }}">
+                    {{ $user->name }}
+                </option>
+            @endforeach
+        </select>
 
-    <input type="date" name="due_date" class="w-full border p-2">
-    <button class="bg-green-600 text-white px-4 py-2 rounded">Issue</button>
+        <input type="date" name="due_date" class="w-full border p-2">
+        <button class="bg-green-600 text-white px-4 py-2 rounded">Issue</button>
     </form>
 @endsection

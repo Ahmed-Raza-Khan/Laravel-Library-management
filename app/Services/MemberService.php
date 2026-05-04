@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Member;
+use App\Models\User;
 use App\Models\Book;
 use App\Models\BookIssue;
 
@@ -13,42 +13,45 @@ class MemberService
      */
     public function getAllMembers()
     {
-        return Member::latest()->get();
+        return User::where('role', 'user')->latest()->get();
+        // return Member::latest()->get();
     }
 
     public function createMember($data)
     {
-        return Member::create([
+        return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
+            'password' => bcrypt('12345678'),
             'address' => $data['address'] ?? null,
             'status' => 1,
+            'role' => 'user',
         ]);
     }
 
     public function findMember($id)
     {
-        return Member::findOrFail($id);
+        return User::findOrFail($id);
     }
 
     public function updateMember($id, $data)
     {
-        $member = $this->findMember($id);
+        $user = $this->findMember($id);
 
-        $member->update([
+        $user->update([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'address' => $data['address'] ?? null,
         ]);
 
-        return $member;
+        return $user;
     }
 
     public function deleteMember($id)
     {
-        return Member::destroy($id);
+        return User::destroy($id);
     }
 
     // MEMBER SIDE

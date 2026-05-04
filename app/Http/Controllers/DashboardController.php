@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Book;
-use App\Models\Member;
+use App\Models\User;
 use App\Models\BookIssue;
 
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class DashboardController extends Controller
     {
         return view('dashboard',[
             'books' => Book::count(),
-            'members' => Member::count(),
+            'members' => User::where('role', 'user')->count(),
             'issued' => BookIssue::where('status','issued')->count(),
             'returned' => BookIssue::where('status','returned')->count(),
             'overdue' => BookIssue::where('status','issued')

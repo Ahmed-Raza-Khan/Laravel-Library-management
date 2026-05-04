@@ -15,7 +15,7 @@ class MemberSeeder extends Seeder
      */
     public function run(): void
     {
-            $members = [
+        $members = [
             ['name' => 'Ali Khan', 'email' => 'ali@gmail.com'],
             ['name' => 'Sara Ahmed', 'email' => 'sara@gmail.com'],
             ['name' => 'Usman Tariq', 'email' => 'usman@gmail.com'],
@@ -28,12 +28,21 @@ class MemberSeeder extends Seeder
         ];
 
         foreach ($members as $member) {
+
             User::create([
                 'name' => $member['name'],
                 'email' => $member['email'],
                 'password' => Hash::make('12345678'),
                 'role' => 'user',
             ]);
+
+            // Member::create([
+            //     'name' => $member['name'],
+            //     'email' => $member['email'],
+            //     'phone' => '03000000000',
+            //     'address' => 'Karachi',
+            //     'status' => 1,
+            // ]);
         }
 
         // foreach ($members as $member) {
