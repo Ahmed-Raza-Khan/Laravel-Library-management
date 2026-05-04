@@ -26,8 +26,32 @@ class AuthorSeeder extends Seeder
         ]);
 
         Author::create([
-            'name' => 'Stephen Hawking',
+            'name' => 'john linkin',
             'bio' => 'Scientist & physicist',
+            'status' => 1
+        ]);
+
+        Author::create([
+            'name' => 'Abraham Waski',
+            'bio' => 'Dream World',
+            'status' => 1
+        ]);
+
+        Author::create([
+            'name' => 'Sam Tisen',
+            'bio' => 'Unicorn Creator',
+            'status' => 1
+        ]);
+
+        Author::create([
+            'name' => 'Keral Askim',
+            'bio' => 'Sonya bir jecksaniz',
+            'status' => 1
+        ]);
+
+        Author::create([
+            'name' => 'Altan bir fatih',
+            'bio' => 'Bosnia danda Farmanachez',
             'status' => 1
         ]);
     }

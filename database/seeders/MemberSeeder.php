@@ -20,6 +20,11 @@ class MemberSeeder extends Seeder
             ['name' => 'Sara Ahmed', 'email' => 'sara@gmail.com'],
             ['name' => 'Usman Tariq', 'email' => 'usman@gmail.com'],
             ['name' => 'Ayesha Malik', 'email' => 'ayesha@gmail.com'],
+            ['name' => 'Ibrahim Arham', 'email' => 'ibrahim@gmail.com'],
+            ['name' => 'Kamran Naseem Agha', 'email' => 'saeed@gmail.com'],
+            ['name' => 'Ali Najam Brothers', 'email' => 'najam@gmail.com'],
+            ['name' => 'Phillips Komas', 'email' => 'phillips@gmail.com'],
+            ['name' => 'Neckola Hexa', 'email' => 'neckola@gmail.com'],
         ];
 
         foreach ($members as $member) {
